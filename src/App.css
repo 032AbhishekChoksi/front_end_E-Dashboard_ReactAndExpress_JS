@@ -31,10 +31,6 @@
   border: 1px solid skyblue;
 }
 
-.register {
-  margin-left: 30%;
-}
-
 .appButton {
   margin: 25px;
   padding: 10px;
@@ -44,15 +40,15 @@
   cursor: pointer;
 }
 
-.login {
+.register, .login, .product {
   margin-left: 30%;
 }
 
-.nav-right {  
+.nav-right {
   text-align: right;
 }
 
-.logo{
+.logo {
   width: 45px;
   float: left;
   border-radius: 50%;
