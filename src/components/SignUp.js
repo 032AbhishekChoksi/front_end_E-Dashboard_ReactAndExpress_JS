@@ -12,6 +12,7 @@ const SignUp = () => {
             navigate('/')
         }
     })
+
     const collectData = async () => {
         console.warn(name, email, password)
         let result = await fetch('http://localhost:5000/register', {
