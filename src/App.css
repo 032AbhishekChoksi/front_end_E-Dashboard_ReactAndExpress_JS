@@ -43,6 +43,9 @@
   border: 1px solid;
   cursor: pointer;
 }
+.login{
+  margin-left: 30%;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
