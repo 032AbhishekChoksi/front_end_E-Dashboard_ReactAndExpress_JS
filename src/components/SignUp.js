@@ -11,7 +11,8 @@ const SignUp = () => {
         if (auth) {
             navigate('/')
         }
-    })
+        // eslint-disable-next-line
+    }, [])
 
     const collectData = async () => {
         console.warn(name, email, password)

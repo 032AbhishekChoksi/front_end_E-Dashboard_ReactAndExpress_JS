@@ -6,6 +6,7 @@ const ProductList = () => {
 
     useEffect(() => {
         getProducts();
+         // eslint-disable-next-line
     }, [])
 
     const getProducts = async () => {
