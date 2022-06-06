@@ -47,6 +47,7 @@
 .product-list {
   text-align: center;
   margin-top: 25px;
+  margin-left: -40px;
 }
 .product-list ul{
   margin: 0;
