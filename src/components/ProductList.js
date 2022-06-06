@@ -23,8 +23,7 @@ const ProductList = () => {
         if(result){
             getProducts();
             alert('Record is deleted')
-        }
-        
+        }        
     }
     
     return (
