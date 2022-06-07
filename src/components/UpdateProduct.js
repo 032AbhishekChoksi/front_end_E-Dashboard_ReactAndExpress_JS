@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateProduct = () => {
     const [name, setName] = useState("");
@@ -7,14 +7,15 @@ const UpdateProduct = () => {
     const [category, setCategory] = useState("");
     const [company, setCompany] = useState("");
     const [error, setError] = useState(false);
+    const navigate = useNavigate();
     const params = useParams();
 
-    useEffect(() => {       
+    useEffect(() => {
         getProductDetails();
         // eslint-disable-next-line
-    },[]);
+    }, []);
 
-    const getProductDetails = async () =>{
+    const getProductDetails = async () => {
         // console.warn(params)
         let result = await fetch(`http://localhost:5000/product/${params.id}`);
         result = await result.json();
@@ -30,7 +31,22 @@ const UpdateProduct = () => {
             setError(true);
             return false;
         }
-        console.warn(name, price, category, company)
+
+        // console.warn(name, price, category, company)
+        let result = await fetch(`http://localhost:5000/product/${params.id}`, {
+            method: 'put',
+            body: JSON.stringify({ name, price, category, company }),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        result = await result.json();
+
+        if (result.modifiedCount == 1) {
+            navigate('/')
+        }else{
+            alert('Product Not Updated!')
+        }
     }
 
     return (
