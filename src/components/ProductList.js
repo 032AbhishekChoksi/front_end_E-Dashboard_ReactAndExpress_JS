@@ -6,7 +6,7 @@ const ProductList = () => {
 
     useEffect(() => {
         getProducts();
-         // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [])
 
     const getProducts = async () => {
@@ -21,15 +21,35 @@ const ProductList = () => {
             method: 'delete'
         });
         result = await result.json();
-        if(result){
+        if (result) {
             getProducts();
             alert('Record is deleted')
-        }        
+        }
     }
-    
+
+    const searchHandle = async (event) => {
+        let key = event.target.value;
+        if (key) {
+            let result = await fetch(`http://localhost:5000/search/${key}`);
+            result = await result.json();
+            if(result){
+                setProducts(result)
+            }
+            // if (result.length > 0) {
+            //     setProducts(result)
+            // }
+            // else {
+            //     alert('Product Not Found!')
+            // }
+        } else {
+            getProducts();
+        }
+    }
+
     return (
         <div className="product-list">
             <h2>Product List</h2>
+            <input type="text" className="search-product-box" placeholder="Search Product" onChange={searchHandle} />
             <ul>
                 <li>S.No</li>
                 <li>Name</li>
@@ -39,7 +59,7 @@ const ProductList = () => {
                 <li>Operation</li>
             </ul>
             {
-                products.map((item, index) =>
+               products.length>0 ? products.map((item, index) =>
                     <ul key={item._id}>
                         <li>{index + 1}</li>
                         <li>{item.name}</li>
@@ -47,11 +67,12 @@ const ProductList = () => {
                         <li>{item.category}</li>
                         <li>{item.company}</li>
                         <li>
-                            <Link to={"/update/"+item._id}>Update</Link>&nbsp;
-                            <button onClick={()=>deleteProduct(item._id)}>Delete</button>
+                            <Link to={"/update/" + item._id}>Update</Link>&nbsp;
+                            <button onClick={() => deleteProduct(item._id)}>Delete</button>
                         </li>
                     </ul>
                 )
+                : <h2>Product Not Found!</h2>
             }
         </div>
     )

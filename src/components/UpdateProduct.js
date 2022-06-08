@@ -42,7 +42,7 @@ const UpdateProduct = () => {
         });
         result = await result.json();
 
-        if (result.modifiedCount == 1) {
+        if (result.modifiedCount === 1) {
             navigate('/')
         }else{
             alert('Product Not Updated!')
