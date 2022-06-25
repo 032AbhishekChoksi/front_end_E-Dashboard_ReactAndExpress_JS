@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import swal from 'sweetalert';
 const ProductList = () => {
     const [products, setProducts] = useState([]);
 
@@ -10,9 +10,9 @@ const ProductList = () => {
     }, [])
 
     const getProducts = async () => {
-        let result = await fetch('http://localhost:5000/products',{
-            headers:{
-                authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
+        let result = await fetch('http://localhost:5000/products', {
+            headers: {
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
             }
         });
         result = await result.json();
@@ -20,30 +20,55 @@ const ProductList = () => {
     }
 
     const deleteProduct = async (id) => {
-        // console.warn(id);
-        let result = await fetch(`http://localhost:5000/product/${id}`, {
-            method: 'delete',
-            headers:{
-                authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
-            }
+        const willDelete = await swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
         });
-        result = await result.json();
-        if (result) {
-            getProducts();
-            alert(result.result)
+        if (willDelete) {
+            // console.warn(id);
+            let result = await fetch(`http://localhost:5000/product/${id}`, {
+                method: 'delete',
+                headers: {
+                    authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
+                }
+            });
+            result = await result.json();
+            if (result) {
+                swal({
+                    title: "Delete Product",
+                    text: "Deleted Successfully!",
+                    icon: "success",
+                });
+                getProducts();
+
+            } else {
+                swal({
+                    title: "Delete Product",
+                    text: "Delete Product Fail!",
+                    icon: "warning",
+                    dangerMode: true
+                });
+            }
+
+        } else {
+            swal("Your product is safe!");
         }
+
     }
 
     const searchHandle = async (event) => {
         let key = event.target.value;
         if (key) {
-            let result = await fetch(`http://localhost:5000/search/${key}`,{
-                headers:{
-                    authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
+            let result = await fetch(`http://localhost:5000/search/${key}`, {
+                headers: {
+                    authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
                 }
             });
             result = await result.json();
-            if(result){
+            if (result) {
                 setProducts(result)
             }
             // if (result.length > 0) {
@@ -70,7 +95,7 @@ const ProductList = () => {
                 <li>Operation</li>
             </ul>
             {
-               products.length>0 ? products.map((item, index) =>
+                products.length > 0 ? products.map((item, index) =>
                     <ul key={item._id}>
                         <li>{index + 1}</li>
                         <li>{item.name}</li>
@@ -83,7 +108,7 @@ const ProductList = () => {
                         </li>
                     </ul>
                 )
-                : <h2>Product Not Found!</h2>
+                    : <h2>Product Not Found!</h2>
             }
         </div>
     )

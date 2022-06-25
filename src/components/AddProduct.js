@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import swal from 'sweetalert';
 
 const AddProduct = () => {
     const [name, setName] = useState("");
@@ -22,10 +23,24 @@ const AddProduct = () => {
             body: JSON.stringify({ name, price, category, company, userId }),
             headers: {
                 'Content-Type': 'application/json',
-                authorization:`bearer ${JSON.parse(localStorage.getItem('token'))}`
+                authorization: `bearer ${JSON.parse(localStorage.getItem('token'))}`
             },
         });
         result = await result.json();
+        if (result) {
+            swal({
+                title: "Insert Product",
+                text: "Inserted Successfully!",
+                icon: "success",
+            }).then(() => {
+                setName("");
+                setPrice("");
+                setCategory("");
+                setCompany("");
+                setError("");
+                swal('The Value IsEmpty');
+            });
+        }
         console.warn(result);
     }
 
